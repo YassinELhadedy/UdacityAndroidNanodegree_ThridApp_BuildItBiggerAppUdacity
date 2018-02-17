@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">myandroidlib</string>
+    <string name="title_activity_joke_display">JokeDisplayActivity</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>
