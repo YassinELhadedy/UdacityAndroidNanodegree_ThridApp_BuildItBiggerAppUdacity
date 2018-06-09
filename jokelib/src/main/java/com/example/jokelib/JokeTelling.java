@@ -21,4 +21,6 @@ public class JokeTelling {
     public String getRandomJoke() {
         return jokes[random.nextInt(jokes.length)];
     }
+
+
 }

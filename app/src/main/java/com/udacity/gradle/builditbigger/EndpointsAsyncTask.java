@@ -3,9 +3,10 @@ package com.udacity.gradle.builditbigger;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
-
+import android.view.View;
+import android.widget.ProgressBar;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -18,8 +19,26 @@ import java.io.IOException;
 
 public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
     private static MyApi myApiService = null;
+    private PostExecute fetchdata;
     @SuppressLint("StaticFieldLeak")
-    private Context context;
+
+    private String mResult;
+    @SuppressLint("StaticFieldLeak")
+    private ProgressBar mProgressBar;
+
+    EndpointsAsyncTask( ProgressBar progressBar,PostExecute fetchdata) {
+        this.mProgressBar = progressBar;
+        this.fetchdata = fetchdata;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @SafeVarargs
     @Override
@@ -37,23 +56,34 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            // end options for devappserver
 
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
+
 
         try {
-            return myApiService.sayHi(name).execute().getData();
+
+            return myApiService.sayHi().execute().getData();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e("Jokes", e.getMessage(), e);
+
+            return null;
         }
     }
 
+
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        super.onPostExecute(result);
+        fetchdata.onPostExecute(result);
+
+
+    }
+
+
+
+    interface PostExecute{
+        void onPostExecute(String result);
     }
 }

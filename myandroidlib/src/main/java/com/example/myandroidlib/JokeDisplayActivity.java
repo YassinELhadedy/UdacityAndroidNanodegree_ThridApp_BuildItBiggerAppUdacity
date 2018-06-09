@@ -1,5 +1,6 @@
 package com.example.myandroidlib;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ public class JokeDisplayActivity extends AppCompatActivity {
     public final static String INTENT_JOKE = "INTENT_JOKE";
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +23,8 @@ public class JokeDisplayActivity extends AppCompatActivity {
         // Processing the joke intent
         String joke = getIntent().getStringExtra(INTENT_JOKE);
         TextView textViewJoke = findViewById(R.id.textview_joke);
-        textViewJoke.setText(joke);
+        if (joke !=null) textViewJoke.setText(joke);
+        else textViewJoke.setText("Empty Joke");
     }
 
     @Override

@@ -31,12 +31,21 @@ dependencies {
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
 
+    implementation 'com.google.appengine:appengine-api-1.0-sdk:1.9.59'
+    implementation project(":jokelib")
+
+
 }
 // V2: Define deployment configuration using the new App Engine plugin
 // with the appengine closure
-appengine {  // App Engine tasks configuration
-    deploy {   // deploy configuration
+appengine {  // App Engine tasks configuration.
+    // You must replace YOUR_PROJECT_ID with your Google Cloud Project Id
+    run {
+        host = "0.0.0.0"
+        port = 8080
 
+    }
+    deploy {   // deploy configuration
         // The following is used for acceptance tests and
         // is not required for a migration.
         project = findProperty("appengine.deploy.project")
